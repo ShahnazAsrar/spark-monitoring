@@ -78,7 +78,7 @@ To create and configure the Azure Databricks cluster, follow these steps:
 1. Navigate to your Azure Databricks workspace in the Azure Portal.
 2. On the home page, click "new cluster".
 3. Choose a name for your cluster and enter it in "cluster name" text box. 
-4. In the "Databricks Runtime Version" dropdown, select **4.3 (includes Apache Spark 2.3.1, Scala 2.11)**.
+4. In the "Databricks Runtime Version" dropdown, select 5.0, or later.  **(by default, the library supports Apache Spark 2.4.0 and Scala 2.11)**.
 5. Under "Advanced Options", click on the "Spark" tab. Enter the following name-value pairs in the "Spark Config" text box:
 
   | Name | Value |
@@ -86,6 +86,8 @@ To create and configure the Azure Databricks cluster, follow these steps:
   |spark.extraListeners| com.databricks.backend.daemon.driver.DBCEventLoggingListener,org.apache.spark.listeners.UnifiedSparkListener|
   |spark.unifiedListener.sink |org.apache.spark.listeners.sink.loganalytics.LogAnalyticsListenerSink|
   |spark.unifiedListener.logBlockUpdates|false|
+  |spark.driver.extraJavaOptions|-Dlocal.spark.executor.id=driver -Dlocal.spark.databricks.clusterUsageTags.clusterId=${CLUSTER_ID}|
+  |spark.executor.extraJavaOptions|-Dlocal.spark.executor.id={{EXECUTOR_ID}} -Dlocal.spark.databricks.clusterUsageTags.clusterId=${CLUSTER_ID} -Dlocal.spark.application.id={{APP_ID}}|
 6. While still under the "Spark" tab, enter the following in the "Environment Variables" text box:
 * LOG_ANALYTICS_WORKSPACE_ID=[your Azure Log Analytics workspace ID](/azure/azure-monitor/platform/agent-windows#obtain-workspace-id-and-key)
 * LOG_ANALYTICS_WORKSPACE_KEY=[your Azure Log Analytics shared access signature](/azure/azure-monitor/platform/agent-windows#obtain-workspace-id-and-key)
